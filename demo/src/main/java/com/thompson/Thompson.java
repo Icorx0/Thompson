@@ -85,7 +85,7 @@ public final class Thompson {
         DMProcess += "El estado inicial es s0\n";
         DMProcess += "DM Está definido por\n";
         // Tabla
-        /*DMProcess += "A\tDM\n";
+        DMProcess += "A\tDM\n";
         DMProcess += lenguageString2() + "\n";
         for(DState dstate: dstates) {
             String str = "s" + dstate.ID + "\t";
@@ -93,7 +93,7 @@ public final class Thompson {
                 str += "s" + dstate.F.get(letter).ID + "\t";
             }
             DMProcess += str + "\n";
-        }*/
+        }
     }
 
     private ArrayList<Node> analysis(String chain) {

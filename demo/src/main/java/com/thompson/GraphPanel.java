@@ -48,6 +48,16 @@ public class GraphPanel extends JPanel {
         AffineTransform affinetransform = new AffineTransform();     
         FontRenderContext frc = new FontRenderContext(affinetransform,true,true); 
         for(String line: thompson.DMProcess.split("\n")) {
+            // Print table
+            if(line.contains("\t")){
+                String newline = "";
+                for(String subline: line.split("\t")) {
+                    String spaces = "";
+                    for(int i = 0; i < 10-subline.length(); i++) spaces += " ";
+                    newline += subline + spaces;
+                }
+                line = newline;
+            }
             JLabel labelLine = new JLabel();
             int textwidth = (int)(mainfont.getStringBounds(line, frc).getWidth());
             labelLine.setBounds(20, maxheight + labelhight + 10, textwidth, labelhight);
@@ -59,7 +69,7 @@ public class GraphPanel extends JPanel {
             maxheight += labelhight;
             maxwidth = (maxwidth<textwidth) ? textwidth : maxwidth;
         }
-        maxheight += 10;
+        maxheight += 10 + labelhight;
 
         // set maxheight
         setPreferredSize(new Dimension(maxwidth, maxheight)); 
@@ -100,15 +110,6 @@ public class GraphPanel extends JPanel {
             System.out.println(node.ID + "-> " + nextNode.ID);
             if(printed.contains(nextNode.ID)) continue;
             printNextNode(nextNode, graphics2d, thompson);
-            if(nextNode.nodesbefore > 1) {
-                // Lo
-            } else if(node.nextNodes.size() > 1) {
-                // o<
-            } else if(nextNode.ID < node.ID) {
-                    // <-o
-            } else {
-                // o->
-            }
         }
     }
 
@@ -134,9 +135,6 @@ public class GraphPanel extends JPanel {
         return orderedSet;
     }
 
-    private void printLater() {
-    }
-
     private void printNode(Node node, Graphics2D graphics2d, Thompson thompson) {
         Integer[] xy = {0, 0};
         nodePosition.put(node, xy);
@@ -155,19 +153,5 @@ public class GraphPanel extends JPanel {
         int width = (int)(bound.getMaxX() - bound.getMinX());
         int height = (int)(bound.getMaxY() - bound.getMinY());
         graphics2d.drawString("" + node.ID, (xy[0] + XlevelSize/2) - width/2, (xy[1] + YlevelSize/2) + height/2);
-    }
-
-    private void addYLevelUp() {
-        Ylevels += 1;
-        for(Node node: nodePosition.keySet()) {
-            Integer[] xy = nodePosition.get(node);
-            Integer[] newxy = new Integer[2];
-            newxy[0] = xy[0];
-            newxy[1] = xy[1] + YlevelSize;
-            nodePosition.put(node, newxy);
-        }
-    }
-    private void addYLevelDown() {
-        Ylevels += 1;
     }
 }
